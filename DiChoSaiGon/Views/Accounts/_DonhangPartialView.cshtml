@@ -1,0 +1,68 @@
+﻿@model List<Order>
+
+@if (Model != null && Model.Count() > 0)
+{
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <tbody>
+                <tr>
+                    <th>Id</th>
+                    <th>Ngày mua hàng</th>
+                    <th>Ngày ship</th>
+                    <th>Trạng thái</th>
+                    <th>Tổng tiền</th>
+                    <th></th>
+                </tr>
+                @foreach (var item in Model)
+                {
+            <tr>
+                <td><a class="account-order-id">@item.OrderId </a></td>
+                <td>@item.OrderDate</td>
+                <td>@item.ShipDate</td>
+                    @if (item.Deleted != true)
+                    {
+                        <td> Đang xử lý</td>
+                    }
+                    else
+                    {
+                        <td> Đã giao</td>
+                    }
+                <td>@item.TotalMoney.ToString("#,##0")VNĐ</td>
+                <td>
+                    <a href="javascript:void(0)" class="xemdonhang" data-madonhang="@item.OrderId">Xem đơn hàng</a>
+                </td>
+            </tr>
+                }
+
+
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <p>Chưa có đơn hàng nào</p>
+}
+@*@section Scripts{
+    <script>
+    $(document).ready(function () {
+        $(".xemdonhang").click(function () {
+            var madonhang = $(this).attr("data-madonhang")
+            $.ajax({
+                url: '/DonHang/Details',
+                datatype: "json",
+                type: "POST",
+                data: { id: madonhang },
+                async: true,
+                success: function (results) {
+                    $("#records_table").html("");
+                    $("#records_table").html(results);
+                },
+                error: function (xhr) {
+                    alert('error');
+                }
+            });
+        });
+    });
+    </script>
+}*@

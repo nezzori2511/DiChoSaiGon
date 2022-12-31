@@ -1,0 +1,109 @@
+﻿@using PagedList.Core.Mvc
+
+@model PagedList.Core.IPagedList<DiChoSaiGon.Models.Category>
+
+@{
+    ViewData["Title"] = "Danh sách danh mục "+ViewBag.CurrentPage;
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="page-header">
+    <a class="header-title">Danh sách trang : Trang @ViewBag.CurrentPage</a>
+    <div class="header-sub-title">
+        <nav class="breadcrumb breadcrumb-dash">
+            <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="breadcrumb-item"><i class="anticon anticon-home m-r-5"></i>Home</a>
+
+            <span class="breadcrumb-item active">Danh sách danh mục</span>
+        </nav>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="row m-b-30">
+            <div class="col-lg-8">
+
+            </div>
+            <div class="col-lg-4 text-right">
+                <a asp-area="Admin" asp-controller="AdminCategories" asp-action="Create" class="btn btn-primary"> <i class="anticon anticon-plus-circle m-r-5"></i><span>Add categories</span></a>
+
+            </div>
+        </div>
+        <div class="row m-b-30">
+            <div class="col-lg-12">
+
+            </div>
+
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover e-commerce-table">
+                <thead>
+                    <tr>
+
+                        <th>ID</th>
+                        <th>Cat name</th>
+                        <th>Ordering</th>
+                        <th>Trạng thái</th>
+
+
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model)
+                        {
+                            string url = $"/{item.Alias}";
+                    <tr>
+
+                        <td>
+                            @item.CatId
+                        </td>
+                        <td>
+                            <a target="_blank" href="@url">@item.CatName</a>
+
+                        </td>
+                        <td>
+                            @item.Ordering
+                        </td>
+                        <td>
+                            @if (@item.Published == true)
+                            {
+                                <div class="d-flex align-items-center">
+                                    <div class="badge badge-success badge-dot m-r-10"></div>
+                                    <div>Public </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="d-flex align-items-center">
+                                    <div class="badge badge-success badge-dot m-r-10"></div>
+                                    <div>NonPublic</div>
+                                </div>
+                            }
+
+                        </td>
+
+
+                        <td>
+                            <a class="btn btn-primary btn-tone m-r-5" asp-area="Admin" asp-controller="AdminCategories" asp-action="Details" asp-route-id="@item.CatId">View</a>
+                            <a class="btn btn-secondary btn-tone m-r-5" asp-area="Admin" asp-controller="AdminCategories" asp-action="Edit" asp-route-id="@item.CatId">Edit</a>
+                            <a class="btn btn-success btn-tone m-r-5" asp-area="Admin" asp-controller="AdminCategories" asp-action="Delete" asp-route-id="@item.CatId">Delete</a>
+
+                        </td>
+                    </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+            <div aria-label="Page navigation example">
+                <ul class="pagination">
+                    <pager class="pager-container" list="@Model" asp-area="Admin" asp-controller="AdminCategories" asp-action="Index" />
+
+                </ul>
+
+            </div>
+
+        </div>
+    </div>
+</div>

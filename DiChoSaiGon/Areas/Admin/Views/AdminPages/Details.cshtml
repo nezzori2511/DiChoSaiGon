@@ -1,0 +1,114 @@
+﻿@model DiChoSaiGon.Models.Page
+
+@{
+    ViewData["Title"] = "Chi tiết ";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<form asp-controller="AdminPages" asp-action="Details" asp-route-id="@Model.PageId" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="PageId" />
+    <input type="hidden" asp-for="Thumb" />
+    <div class="page-header no-gutters has-tab">
+        <div class="d-md-flex m-b-15 align-items-center justify-content-between">
+            <div class="media align-items-center m-b-15">
+
+
+            </div>
+            <div class="m-b-15">
+                <button class="btn btn-primary">
+                    <i class="anticon anticon-save"></i>
+                    <span>Save</span>
+                </button>
+            </div>
+        </div>
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#product-edit-basic">Thông tin cơ bản</a>
+            </li>
+          
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#product-edit-description">Mô tả</a>
+            </li>
+        </ul>
+    </div>
+    <div class="tab-content m-t-15">
+        <div class="tab-pane fade show active" id="product-edit-basic">
+            <div class="card">
+                <div class="card-body">
+                    <table class="product-info-table m-t-20">
+                        <tbody>
+
+                            <tr>
+                                <td>Tên page:</td>
+                                <td>	@Model.PageName</td>
+                            </tr>
+                            <tr>
+                                <td>Tiêu đề:</td>
+                                <td>@Model.Title</td>
+                            </tr>
+                            <tr>
+                                <td>Alias:</td>
+                                <td>@Model.Alias</td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    Trạng thái
+                                </td>
+                                <td>
+                                    <div class="m-t-25">
+                                        <div class="form-group d-flex align-items-center">
+                                            <div class="switch m-r-10">
+                                                <input type="checkbox" asp-for="Published" checked="">
+                                                <label for="Published"></label>
+                                            </div>
+                                            <label>Public </label>
+                                        </div>
+
+
+                                    </div>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td>Ảnh:</td>
+
+                                <td><img src="~/images/page/@Model.Thumb" /></td>
+                            </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+                    
+
+                   
+
+
+
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="tab-pane fade" id="product-edit-description">
+            <div class="card">
+                <div class="card-body">
+                    <table class="product-info-table m-t-20">
+                        <h4 class="card-title">Thông tin chi tiết</h4>
+                        <tr>
+                           
+                            <td>
+                                @Html.Raw(Model.Contents)
+                            </td>
+                        </tr>
+
+                    </table>
+
+                    </div>
+                </div>
+                </div>
+            </div>
+</form>
