@@ -1,5 +1,6 @@
 ﻿@model DiChoSaiGon.Models.Product
-
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @{
     ViewData["Title"] = Model.Title;
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -94,9 +95,20 @@
                                         <input hidden asp-for="@Model.ProductId" />
                                     </li>
                                     <li class="wishlist-btn-wrap">
-                                        <a class="btn rounded-0" href="wishlist.html">
-                                            <i class="pe-7s-like"></i>
-                                        </a>
+                                        @if (@HttpContextAccessor.HttpContext.Session.GetInt32("CustomerId") != null)
+                                        {
+                                            <a class="btn rounded-0" href="/addwl">
+                                                <i class="pe-7s-like"></i>
+                                            </a>
+                                            <input hidden asp-for="@Model.ProductId" />
+                                        }
+                                        else
+                                        {
+                                            <a class="btn rounded-0" href="/dang-nhap.html?returnUrl=/addwl">
+                                                <i class="pe-7s-like"></i>
+                                            </a>
+                                            <input hidden asp-for="@Model.ProductId" />
+                                        }
                                     </li>
                                 </ul>
                                 <div class="product-category text-matterhorn pb-2">
@@ -478,6 +490,38 @@
                     }
                 });
             });*@
+
+        });
+        $(function () {
+            $(".wishlist-btn-wrap").click(function () {
+                var productid = $('#ProductId').val();
+
+                $.ajax({
+                    url: '/addwl',
+                    type: "POST",
+                    dataType: "JSON",
+                    data: {
+                        productID: productid,
+
+                    },
+                    success: function (response) {
+                        if (response.success == true) {
+
+                            //$.notify("Thêm sanh sách yêu thích thành công", "success");
+                            alert("Thêm sanh sách yêu thích thành công");
+                            location.reload();
+
+                        }
+                        else  {
+                            alert("Đã có sản phẩm trong danh sách yêu thích rồi");
+                            location.reload();
+                            //$.notify("Thêm sanh sách yêu thích thất bại ", "warn");
+                        }
+                        console.log(response); // log to the console to see whether it worked
+                    },
+                   
+                });
+            });
         });
         function loadHeaderCart() {
             $('#miniCart').load("/AjaxContent/HeaderCart");
@@ -485,5 +529,6 @@
         }
     });
     </script>
-
+    <script src="~/assets/js/notify.js"></script>
+    <script src="~/assets/js/notify.min.js"></script>
 }

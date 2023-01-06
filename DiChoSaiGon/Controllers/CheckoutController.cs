@@ -50,7 +50,7 @@ namespace DiChoSaiGon.ModelViews
                 model.Phone = khachhang.Phone;
                 model.Address = khachhang.Address;
             }
-            ViewData["lsTinhThanh"] = new SelectList(_context.Locations.Where(x => x.Levels == 1).OrderBy(x => x.Type).ToList(), "Location", "Name");
+            //ViewData["lsTinhThanh"] = new SelectList(_context.Locations.Where(x => x.Levels == 1).OrderBy(x => x.Type).ToList(), "Location", "Name");
             ViewBag.GioHang = cart;
             return View(model);
         }
@@ -75,7 +75,7 @@ namespace DiChoSaiGon.ModelViews
                 /*khachhang.LocationId = muaHang.TinhThanh;
                 khachhang.District = muaHang.QuanHuyen;
                 khachhang.Ward = muaHang.PhuongXa;*/
-                /*khachhang.Address = muaHang.Address;*/
+                khachhang.Address = muaHang.Address;
                 _context.Update(khachhang);
                 _context.SaveChanges();
             }

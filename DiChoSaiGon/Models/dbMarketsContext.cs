@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using DiChoSaiGon.ModelViews;
 
 #nullable disable
 
@@ -33,6 +32,7 @@ namespace DiChoSaiGon.Models
         public virtual DbSet<Shipper> Shippers { get; set; }
         public virtual DbSet<TinDang> TinDangs { get; set; }
         public virtual DbSet<TransactStatus> TransactStatuses { get; set; }
+        public virtual DbSet<WishList> WishLists { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -139,22 +139,29 @@ namespace DiChoSaiGon.Models
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Email)
+                    .IsRequired()
                     .HasMaxLength(150)
                     .IsFixedLength(true);
 
-                entity.Property(e => e.FullName).HasMaxLength(255);
+                entity.Property(e => e.FullName)
+                    .IsRequired()
+                    .HasMaxLength(255);
 
                 entity.Property(e => e.LastLogin).HasColumnType("datetime");
 
                 entity.Property(e => e.LocationId).HasColumnName("LocationID");
 
-                entity.Property(e => e.Password).HasMaxLength(50);
+                entity.Property(e => e.Password)
+                    .IsRequired()
+                    .HasMaxLength(50);
 
                 entity.Property(e => e.Phone)
+                    .IsRequired()
                     .HasMaxLength(12)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Salt)
+                    .IsRequired()
                     .HasMaxLength(8)
                     .IsFixedLength(true);
 
@@ -182,6 +189,8 @@ namespace DiChoSaiGon.Models
             modelBuilder.Entity<Order>(entity =>
             {
                 entity.Property(e => e.OrderId).HasColumnName("OrderID");
+
+                entity.Property(e => e.Address).IsRequired();
 
                 entity.Property(e => e.CustomerId).HasColumnName("CustomerID");
 
@@ -369,13 +378,40 @@ namespace DiChoSaiGon.Models
                 entity.Property(e => e.Status).HasMaxLength(50);
             });
 
+            modelBuilder.Entity<WishList>(entity =>
+            {
+                entity.HasKey(e => e.IdWishList);
+
+                entity.ToTable("WishList");
+
+                entity.Property(e => e.CustomerId).HasColumnName("CustomerID");
+
+                entity.Property(e => e.ProductId).HasColumnName("ProductID");
+
+                entity.Property(e => e.ProductName)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Thumb)
+                    .IsRequired()
+                    .HasMaxLength(255);
+
+                entity.HasOne(d => d.Customer)
+                    .WithMany(p => p.WishLists)
+                    .HasForeignKey(d => d.CustomerId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_WishList_Customers");
+
+                entity.HasOne(d => d.Product)
+                    .WithMany(p => p.WishLists)
+                    .HasForeignKey(d => d.ProductId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_WishList_Products");
+            });
+
             OnModelCreatingPartial(modelBuilder);
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-
-        public DbSet<DiChoSaiGon.ModelViews.RegisterVM> RegisterVM { get; set; }
-
-        public DbSet<DiChoSaiGon.ModelViews.LoginViewModel> LoginViewModel { get; set; }
     }
 }
