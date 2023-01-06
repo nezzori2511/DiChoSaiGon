@@ -11,6 +11,7 @@ namespace DiChoSaiGon.Models
         {
             AttributesPrices = new HashSet<AttributesPrice>();
             OrderDetails = new HashSet<OrderDetail>();
+            WishLists = new HashSet<WishList>();
         }
 
         public int ProductId { get; set; }
@@ -37,5 +38,6 @@ namespace DiChoSaiGon.Models
         public virtual Category Cat { get; set; }
         public virtual ICollection<AttributesPrice> AttributesPrices { get; set; }
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
+        public virtual ICollection<WishList> WishLists { get; set; }
     }
 }

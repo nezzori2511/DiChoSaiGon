@@ -10,6 +10,7 @@ namespace DiChoSaiGon.Models
         public Customer()
         {
             Orders = new HashSet<Order>();
+            WishLists = new HashSet<WishList>();
         }
 
         public int CustomerId { get; set; }
@@ -30,5 +31,6 @@ namespace DiChoSaiGon.Models
 
         public virtual Location Location { get; set; }
         public virtual ICollection<Order> Orders { get; set; }
+        public virtual ICollection<WishList> WishLists { get; set; }
     }
 }
